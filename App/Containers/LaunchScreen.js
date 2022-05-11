@@ -1,5 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import {
   responsiveFontSize,
   responsiveWidth,
@@ -65,6 +66,13 @@ function LaunchScreen(props) {
           style={styles.textInputView}
         />
         <Text style={styles.forgetText}>Forgot Password?</Text>
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.buttonTitle}>Sign In</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.bottomContainer}>
+        <Text style={styles.bottomText}>Don’t have an account?</Text>
+        <Text styles={styles.signUpText}> Sign Up</Text>
       </View>
     </View>
   );
@@ -104,7 +112,35 @@ const styles = StyleSheet.create({
     color: '#8C8896',
     fontSize: responsiveFontSize(1.6),
   },
-  forgetText:{color:'red',}
+  forgetText: {
+    color: '#7D8593',
+    alignSelf: 'flex-end',
+    paddingVertical: responsiveFontSize(3),
+  },
+  button: {
+    marginTop: responsiveFontSize(7),
+    backgroundColor: '#427DAA',
+    margin: responsiveFontSize(1),
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: responsiveFontSize(1),
+  },
+  buttonTitle: {
+    paddingVertical: responsiveFontSize(2.5),
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: responsiveFontSize(2.4),
+  },
+  bottomContainer: {flex: 1, flexDirection: 'row', justifyContent: 'center'},
+  bottomText: {
+    color: '#3D3A45',
+    fontSize: responsiveFontSize(2),
+  },
+  signUpText: {
+    color: '#427DAA',
+
+    fontSize: responsiveFontSize(2),
+  },
 });
 
 export default LaunchScreen;
