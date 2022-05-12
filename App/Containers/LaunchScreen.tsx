@@ -1,14 +1,32 @@
-import React from 'react';
-import {StyleSheet, Text, View,TouchableOpacity} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {
   responsiveFontSize,
   responsiveWidth,
   responsiveHeight,
 } from 'react-native-responsive-dimensions';
+import SearchActions from '../Redux/SearchRedux';
+
+import api from '../Services/Api';
 import Svg, {Path, Rect} from 'react-native-svg';
 import {TextInput} from '../Components';
+import {useDispatch} from 'react-redux';
+import Loader from '../Components/Loader';
 // import {Icon} from '../Images/Icons';
 function LaunchScreen(props) {
+  const dispatch = useDispatch();
+  const [emailAddress, setemailAddress] = useState('');
+  const [password, setpassword] = useState('');
+  useEffect(() => {}, []);
+
+  //Bearer 194|BHOmvGpU8zXcvq9L6ENwuCK3pwOCaOV49WnSLlI1
+  const onPressSignIn = () => {
+    props.navigation.navigate('HomeScreen');
+    // alert(emailAddress + password);
+    // let payload = {email: emailAddress, password: password,user_type:'seller'};
+    // dispatch(SearchActions.loginRequest(payload));
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.iconWrapper}>
@@ -45,11 +63,10 @@ function LaunchScreen(props) {
           titleStyle={styles.titleStyle}
           editable={true}
           placeholder={'Enter Your Email'}
-          // value={address}
-          // placeholderTextColor={Colors.white}
-          // onChangeText={(value) => {
-          //   changeFinalData(value, 'street'), setAddress(value);
-          // }}
+          value={emailAddress}
+          onChangeText={(value) => {
+            setemailAddress(value);
+          }}
           style={styles.textInputView}
         />
         <TextInput
@@ -57,23 +74,22 @@ function LaunchScreen(props) {
           titleStyle={styles.titleStyle}
           editable={true}
           placeholder={'Enter Your Password'}
-          // value={address}
-          // placeholderTextColor={Colors.white}
-          // onChangeText={(value) => {
-          //   changeFinalData(value, 'street'), setAddress(value);
-          // }}
+          value={password}
+          onChangeText={(value) => {
+            setpassword(value);
+          }}
           style={styles.textInputView}
         />
         <Text style={styles.forgetText}>Forgot Password?</Text>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => props.navigation.navigate('HomeScreen')}>
+        <TouchableOpacity style={styles.button} onPress={onPressSignIn}>
           <Text style={styles.buttonTitle}>Sign In</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.bottomContainer}>
         <Text style={styles.bottomText}>Don’t have an account?</Text>
-        <Text style={styles.signUpTextStyle}> Sign Up</Text>
+        <TouchableOpacity>
+          <Text style={styles.signUpTextStyle}> Sign Up</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -100,7 +116,7 @@ const styles = StyleSheet.create({
   textInputView: {
     fontSize: responsiveFontSize(1.6),
 
-    color: 'white',
+    color: 'black',
     paddingHorizontal: responsiveWidth(4),
     alignSelf: 'center',
     height: responsiveHeight(7),

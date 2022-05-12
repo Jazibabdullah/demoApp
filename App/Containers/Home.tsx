@@ -1,5 +1,5 @@
 //import liraries
-import React, {Component} from 'react';
+import React, {Component, useEffect} from 'react';
 import {
   View,
   Text,
@@ -9,76 +9,79 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import Svg, {Defs, Path, Pattern, Rect, Use} from 'react-native-svg';
 import {
   responsiveFontSize,
   responsiveWidth,
   responsiveHeight,
 } from 'react-native-responsive-dimensions';
+import SearchActions from '../Redux/SearchRedux';
+import {Loader} from '../Components';
 // create a component
 const Home = () => {
+  const dispatch = useDispatch();
+  const posts = useSelector((state) => state?.search?.posts);
+  const gigs = useSelector((state) => state?.search?.gigs);
+
+  useEffect(() => {
+    dispatch(SearchActions.postsRequest());
+    dispatch(SearchActions.gigsRequest());
+  }, []);
+
   const list = [{}, {}, {}, {}, {}, {}, {}, {}, {}];
   const keyExtractor = (item, index) => index.toString();
   const renderItem = ({item, index}) => {
     return (
-      <View style={styles.gigListCard}>
+      <TouchableOpacity style={styles.gigListCard}>
         <View style={styles.cardImageContainer}>
           <Image
             style={styles.tinyCircleLogo}
-            source={require('../Images/userCirclePic.png')}
+            source={{uri: item?.profile_image}}
           />
         </View>
         <View style={styles.cardDetailContainer}>
-          <Text style={styles.cardHeader}>
-            Looking for Flutter Dev & UI/UX designer.
+          <Text style={styles.cardHeader}>{item?.title}</Text>
+          <Text style={styles.cardUserName}>
+            {item?.first_name} {item?.last_name}
           </Text>
-          <Text style={styles.cardUserName}>Leon Nunez</Text>
+          <Text style={styles.cardDetail}>{item?.description}</Text>
           <Text style={styles.cardDetail}>
-            I need a talent for our business who Take our career to the next
-            level. I need a talent for our business who Take our career to the
-            next...
-          </Text>
-          <Text style={styles.cardDetail}>
-            Budget: <Text style={styles.cardPrice}>150$</Text>
+            Budget: <Text style={styles.cardPrice}>{item?.cost}$</Text>
           </Text>
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.button}>
-              <Text>Category1</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
-              <Text>Category2</Text>
+              <Text>{item?.category}</Text>
             </TouchableOpacity>
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
   const renderSmallCard = ({item, index}) => {
     return (
-      <View style={styles.smallCardCont}>
+      <TouchableOpacity style={styles.smallCardCont}>
         <View style={styles.cardImage}>
-          <Image
-            style={styles.tinyLogo}
-            source={require('../Images/logo.png')}
-          />
+          <Image style={styles.tinyLogo} source={{uri: item?.profile_image}} />
         </View>
         <View style={styles.smallCardDetail}>
-          <Text style={styles.subHeading}>UI Designer</Text>
+          <Text style={styles.subHeading}>{item?.image1}</Text>
           <View style={styles.detailSubCont}>
             <Image
-              style={styles.tinyLogo}
+              // style={styles.tinyLogo}
               source={require('../Images/rating.png')}
             />
-            <Text style={styles.cardDetail}>
-              From: <Text style={styles.cardPrice}>25$</Text>
+            <Text style={styles.price}>
+              From: <Text style={styles.cardPrice}>{item?.cost}$</Text>
             </Text>
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
   return (
     <ScrollView nestedScroll style={styles.container}>
+      <Loader loading={posts?.loading || gigs?.loading} fullScreen />
       <View style={styles.iconWrapper}>
         <Svg
           xmlns="http://www.w3.org/2000/svg"
@@ -115,12 +118,14 @@ const Home = () => {
       </View>
       <View style={styles.showAllComp}>
         <Text style={styles.subHeading}>Gig Request</Text>
-        <Text style={styles.showAllText}>Show All</Text>
+        <TouchableOpacity>
+          <Text style={styles.showAllText}>Show All</Text>
+        </TouchableOpacity>
       </View>
       <FlatList
         contentContainerStyle={styles.LISTIPADDINGRight}
         showsHorizontalScrollIndicator={false}
-        data={list}
+        data={posts?.data}
         horizontal
         keyExtractor={keyExtractor}
         renderItem={renderItem}
@@ -128,13 +133,15 @@ const Home = () => {
 
       <View style={styles.showAllComp}>
         <Text style={styles.subHeading}>My Active Gigs</Text>
-        <Text style={styles.showAllText}>Show All</Text>
+        <TouchableOpacity>
+          <Text style={styles.showAllText}>Show All</Text>
+        </TouchableOpacity>
       </View>
 
       <FlatList
         contentContainerStyle={styles.LISTIPADDINGRight}
         showsHorizontalScrollIndicator={false}
-        data={list}
+        data={gigs?.data}
         keyExtractor={keyExtractor}
         renderItem={renderSmallCard}
       />
@@ -179,10 +186,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: responsiveFontSize(1),
   },
-  tinyCircleLogo: {width: responsiveFontSize(7), height: responsiveFontSize(7)},
+  tinyLogo: {
+    width: responsiveFontSize(7),
+    height: responsiveFontSize(7),
+  },
+  tinyCircleLogo: {
+    width: responsiveFontSize(7),
+    height: responsiveFontSize(7),
+    borderRadius: responsiveFontSize(7) / 2,
+  },
   cardDetailContainer: {
-    width: responsiveFontSize(35),
-    height: responsiveFontSize(37),
+    // width: responsiveFontSize(35),
+    // height: responsiveFontSize(25),
     flex: 5,
     padding: responsiveFontSize(1),
   },
@@ -193,6 +208,11 @@ const styles = StyleSheet.create({
     paddingVertical: responsiveFontSize(1),
   },
   cardDetail: {
+    fontSize: responsiveFontSize(2),
+    paddingVertical: responsiveFontSize(0.5),
+    width: responsiveFontSize(30),
+  },
+  price: {
     fontSize: responsiveFontSize(2),
     paddingVertical: responsiveFontSize(0.5),
   },

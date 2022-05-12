@@ -10,7 +10,7 @@ const PrimaryNav = createStackNavigator(
   {
     // Default config for all screens
     headerMode: 'none',
-    initialRouteName: 'HomeScreen',
+    initialRouteName: 'LaunchScreen',
     navigationOptions: {
       headerStyle: styles.header,
     },

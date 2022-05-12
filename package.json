@@ -67,6 +67,7 @@
     "@storybook/addons": "^4.1.11",
     "@storybook/channels": "^4.1.11",
     "@storybook/react-native": "^4.1.11",
+    "@types/react-native": "^0.67.7",
     "babel-eslint": "7.1.1",
     "babel-jest": "^25.1.0",
     "babel-plugin-ignite-ignore-reactotron": "^0.3.0",

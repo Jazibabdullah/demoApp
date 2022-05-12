@@ -1,3 +1,3 @@
 import TextInput from './TextInputCustom/TextInput';
-
-export {TextInput};
+import Loader from './Loader';
+export {TextInput, Loader};

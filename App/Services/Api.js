@@ -1,8 +1,8 @@
 // a library to wrap and simplify api calls
-import apisauce from 'apisauce'
+import apisauce from 'apisauce';
 
 // our "constructor"
-const create = (baseURL = 'https://api.github.com/') => {
+const create = (baseURL = 'https://www.admin.edugigs.org/api') => {
   // ------
   // STEP 1
   // ------
@@ -13,13 +13,33 @@ const create = (baseURL = 'https://api.github.com/') => {
     // base URL is read from the "constructor"
     baseURL,
     // here are some default headers
-    headers: {
-      'Cache-Control': 'no-cache'
-    },
+    // headers: {
+    //   'Cache-Control': 'no-cache',
+    // },
     // 10 second timeout...
-    timeout: 10000
-  })
+    timeout: 1000000,
+  });
+  const setAuthToken = (token) => {
+    if (token) {
+      api.setHeader('Authorization', token);
+    }
+  };
 
+  const loginRequest = (payload) => {
+    console.log(payload);
+    const formData = new FormData();
+    formData.append('data', JSON.stringify(payload));
+    console.log(JSON.stringify(formData, null, 8));
+
+    return api.post('/login', formData);
+  };
+
+  const postsRequest = () => {
+    return api.get('/all_gigs_system');
+  };
+  const gigsRequest = () => {
+    return api.get('/all_posts');
+  };
   // ------
   // STEP 2
   // ------
@@ -34,9 +54,9 @@ const create = (baseURL = 'https://api.github.com/') => {
   // Since we can't hide from that, we embrace it by getting out of the
   // way at this level.
   //
-  const getRoot = () => api.get('')
-  const getRate = () => api.get('rate_limit')
-  const getUser = (username) => api.get('search/users', {q: username})
+  const getRoot = () => api.get('');
+  const getRate = () => api.get('rate_limit');
+  const getUser = (username) => api.get('search/users', {q: username});
 
   // ------
   // STEP 3
@@ -54,11 +74,15 @@ const create = (baseURL = 'https://api.github.com/') => {
     // a list of the API functions from step 2
     getRoot,
     getRate,
-    getUser
-  }
-}
+    getUser,
+    setAuthToken,
+    loginRequest,
+    postsRequest,
+    gigsRequest
+  };
+};
 
 // let's return back our create method as the default.
 export default {
-  create
-}
+  create,
+};
