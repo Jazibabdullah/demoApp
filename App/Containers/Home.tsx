@@ -1,24 +1,91 @@
-import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+//import liraries
+import React, {Component} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  ScrollView,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
+import Svg, {Defs, Path, Pattern, Rect, Use} from 'react-native-svg';
 import {
   responsiveFontSize,
   responsiveWidth,
   responsiveHeight,
 } from 'react-native-responsive-dimensions';
-import Svg, {Path, Rect} from 'react-native-svg';
-import {TextInput} from '../Components';
-// import {Icon} from '../Images/Icons';
-function LaunchScreen(props) {
+// create a component
+const Home = () => {
+  const list = [{}, {}, {}, {}, {}, {}, {}, {}, {}];
+  const keyExtractor = (item, index) => index.toString();
+  const renderItem = ({item, index}) => {
+    return (
+      <View style={styles.gigListCard}>
+        <View style={styles.cardImageContainer}>
+          <Image
+            style={styles.tinyCircleLogo}
+            source={require('../Images/userCirclePic.png')}
+          />
+        </View>
+        <View style={styles.cardDetailContainer}>
+          <Text style={styles.cardHeader}>
+            Looking for Flutter Dev & UI/UX designer.
+          </Text>
+          <Text style={styles.cardUserName}>Leon Nunez</Text>
+          <Text style={styles.cardDetail}>
+            I need a talent for our business who Take our career to the next
+            level. I need a talent for our business who Take our career to the
+            next...
+          </Text>
+          <Text style={styles.cardDetail}>
+            Budget: <Text style={styles.cardPrice}>150$</Text>
+          </Text>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.button}>
+              <Text>Category1</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button}>
+              <Text>Category2</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    );
+  };
+  const renderSmallCard = ({item, index}) => {
+    return (
+      <View style={styles.smallCardCont}>
+        <View style={styles.cardImage}>
+          <Image
+            style={styles.tinyLogo}
+            source={require('../Images/logo.png')}
+          />
+        </View>
+        <View style={styles.smallCardDetail}>
+          <Text style={styles.subHeading}>UI Designer</Text>
+          <View style={styles.detailSubCont}>
+            <Image
+              style={styles.tinyLogo}
+              source={require('../Images/rating.png')}
+            />
+            <Text style={styles.cardDetail}>
+              From: <Text style={styles.cardPrice}>25$</Text>
+            </Text>
+          </View>
+        </View>
+      </View>
+    );
+  };
   return (
-    <View style={styles.container}>
+    <ScrollView nestedScroll style={styles.container}>
       <View style={styles.iconWrapper}>
         <Svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 164 40"
           width={responsiveFontSize(20)}
           height={responsiveFontSize(20)}
-          color={'red'}>
+          color={'white'}>
           <Path
             d="M60.03 31C59.0593 31 58.366 30.8093 57.95 30.428C57.534 30.0467 57.326 29.5007 57.326 28.79C57.326 28.4433 57.352 27.854 57.404 27.022C57.456 26.1727 57.5253 25.2107 57.612 24.136C57.6987 23.0613 57.7853 21.926 57.872 20.73C57.9587 19.534 58.0453 18.4073 58.132 17.35C58.2187 16.2927 58.288 15.3653 58.34 14.568C58.392 13.7707 58.418 13.2247 58.418 12.93C58.418 12.67 58.5567 12.54 58.834 12.54H67.986C68.09 12.54 68.1853 12.566 68.272 12.618C68.3587 12.67 68.402 12.7653 68.402 12.904L68.298 14.438C68.2633 14.958 68.116 15.3827 67.856 15.712C67.6133 16.024 67.102 16.18 66.322 16.18H62.734L62.474 19.846H66.166C66.27 19.846 66.3653 19.872 66.452 19.924C66.5387 19.976 66.582 20.0713 66.582 20.21L66.478 21.744C66.4433 22.264 66.296 22.6887 66.036 23.018C65.7933 23.33 65.282 23.486 64.502 23.486H62.24L61.954 27.36H67.674C67.778 27.36 67.8733 27.3947 67.96 27.464C68.0467 27.516 68.09 27.6027 68.09 27.724L67.986 29.258C67.9513 29.778 67.804 30.2027 67.544 30.532C67.3013 30.844 66.79 31 66.01 31H60.03ZM75.9717 31.26C75.2957 31.26 74.6457 31.1387 74.0217 30.896C73.415 30.6533 72.8777 30.272 72.4097 29.752C71.959 29.232 71.595 28.5733 71.3177 27.776C71.0577 26.9787 70.9277 26.0167 70.9277 24.89C70.9277 24.3873 70.9623 23.8327 71.0317 23.226C71.101 22.602 71.2223 21.978 71.3957 21.354C71.569 20.73 71.8117 20.1233 72.1237 19.534C72.4357 18.9447 72.8257 18.4247 73.2937 17.974C73.779 17.506 74.351 17.1333 75.0097 16.856C75.6857 16.5787 76.4743 16.44 77.3757 16.44C78.2423 16.44 78.9357 16.596 79.4557 16.908C79.993 17.2027 80.331 17.7227 80.4697 18.468C80.5043 17.792 80.539 17.2027 80.5737 16.7C80.6083 16.1973 80.6343 15.7293 80.6517 15.296C80.6863 14.8627 80.721 14.4293 80.7557 13.996C80.7903 13.5627 80.825 13.0687 80.8597 12.514C80.877 12.1327 80.9203 11.9073 80.9897 11.838C81.0243 11.8033 81.0677 11.786 81.1197 11.786C81.1717 11.7687 81.267 11.76 81.4057 11.76H82.4197C82.9397 11.76 83.373 11.8207 83.7197 11.942C84.0663 12.0633 84.3437 12.228 84.5517 12.436C84.7597 12.644 84.907 12.8867 84.9937 13.164C85.0803 13.424 85.1237 13.7013 85.1237 13.996C85.1237 13.996 85.1063 14.2127 85.0717 14.646C85.037 15.0793 84.9937 15.66 84.9417 16.388C84.8897 17.0987 84.829 17.9133 84.7597 18.832C84.6903 19.7507 84.621 20.704 84.5517 21.692C84.4823 22.6627 84.413 23.6333 84.3437 24.604C84.2743 25.5573 84.205 26.4413 84.1357 27.256C84.0663 28.0533 84.0057 28.7467 83.9537 29.336C83.919 29.908 83.893 30.2893 83.8757 30.48C83.841 30.688 83.7977 30.8267 83.7457 30.896C83.6937 30.9653 83.5463 31 83.3037 31H82.3677C82.0037 31 81.657 30.974 81.3277 30.922C81.0157 30.8527 80.7383 30.7487 80.4957 30.61C80.2703 30.454 80.0883 30.2547 79.9497 30.012C79.8283 29.752 79.7677 29.4227 79.7677 29.024C79.4557 29.6827 78.979 30.22 78.3377 30.636C77.7137 31.052 76.925 31.26 75.9717 31.26ZM78.2337 19.898C77.3497 19.898 76.691 20.288 76.2577 21.068C75.8417 21.8307 75.6337 22.862 75.6337 24.162C75.6337 24.6127 75.6597 25.0547 75.7117 25.488C75.781 25.9213 75.8937 26.3113 76.0497 26.658C76.2057 27.0047 76.4137 27.282 76.6737 27.49C76.951 27.698 77.2977 27.802 77.7137 27.802C78.459 27.802 79.083 27.438 79.5857 26.71C80.0883 25.982 80.3397 24.838 80.3397 23.278C80.3397 22.8447 80.3137 22.4287 80.2617 22.03C80.2097 21.614 80.1057 21.25 79.9497 20.938C79.7937 20.626 79.577 20.3747 79.2997 20.184C79.0223 19.9933 78.667 19.898 78.2337 19.898ZM93.298 18.91C93.298 19.274 93.2633 19.7853 93.194 20.444C93.142 21.1027 93.0813 21.7873 93.012 22.498C92.96 23.2087 92.8993 23.876 92.83 24.5C92.778 25.124 92.752 25.5747 92.752 25.852C92.752 26.4587 92.8993 26.9353 93.194 27.282C93.506 27.6113 93.9307 27.776 94.468 27.776C94.936 27.776 95.326 27.594 95.638 27.23C95.9673 26.8487 96.2273 26.3633 96.418 25.774C96.626 25.1673 96.7907 24.4827 96.912 23.72C97.0333 22.9573 97.12 22.186 97.172 21.406C97.2413 20.626 97.2933 19.872 97.328 19.144C97.38 18.3987 97.432 17.7573 97.484 17.22C97.5013 17.0813 97.5533 16.96 97.64 16.856C97.7267 16.752 97.8653 16.7 98.056 16.7H98.992C99.5294 16.7 99.9627 16.7607 100.292 16.882C100.639 16.986 100.907 17.142 101.098 17.35C101.306 17.558 101.445 17.818 101.514 18.13C101.601 18.4247 101.644 18.7713 101.644 19.17C101.644 19.43 101.627 19.8027 101.592 20.288C101.575 20.756 101.531 21.4147 101.462 22.264C101.393 23.096 101.306 24.162 101.202 25.462C101.115 26.7447 101.003 28.3393 100.864 30.246C100.829 30.61 100.786 30.8267 100.734 30.896C100.699 30.9653 100.561 31 100.318 31H99.304C98.784 31 98.3507 30.9393 98.004 30.818C97.6747 30.6967 97.406 30.5407 97.198 30.35C96.99 30.1593 96.8427 29.934 96.756 29.674C96.6693 29.414 96.6173 29.1453 96.6 28.868C96.34 29.3187 96.0453 29.7 95.716 30.012C95.404 30.324 95.0747 30.5753 94.728 30.766C94.3813 30.9393 94.026 31.0607 93.662 31.13C93.298 31.2167 92.9427 31.26 92.596 31.26C91.9373 31.26 91.348 31.156 90.828 30.948C90.308 30.7227 89.866 30.428 89.502 30.064C89.1553 29.7 88.8867 29.2667 88.696 28.764C88.5053 28.2613 88.41 27.724 88.41 27.152C88.41 26.9267 88.4187 26.5627 88.436 26.06C88.4707 25.54 88.5053 24.9593 88.54 24.318C88.592 23.6767 88.644 23.0007 88.696 22.29C88.748 21.562 88.7913 20.8773 88.826 20.236C88.878 19.5947 88.9213 19.0313 88.956 18.546C89.008 18.0607 89.0427 17.714 89.06 17.506C89.0947 17.194 89.164 16.986 89.268 16.882C89.372 16.7607 89.5453 16.7 89.788 16.7H90.62C91.1573 16.7 91.5993 16.752 91.946 16.856C92.2927 16.96 92.5613 17.1073 92.752 17.298C92.96 17.4887 93.0987 17.7227 93.168 18C93.2547 18.26 93.298 18.5633 93.298 18.91Z"
             fill="#427DAA"
@@ -37,110 +104,115 @@ function LaunchScreen(props) {
             fill="white"
           />
         </Svg>
+        <Image
+          style={styles.tinyLogo}
+          source={require('../Images/userPic.png')}
+        />
+      </View>
+      <View style={{flex: 1}}>
+        <Text style={styles.greetingText}>Hi Simone,</Text>
+        <Text style={styles.headingText}>Find Your Perfect Gigs!</Text>
+      </View>
+      <View style={styles.showAllComp}>
+        <Text style={styles.subHeading}>Gig Request</Text>
+        <Text style={styles.showAllText}>Show All</Text>
+      </View>
+      <FlatList
+        contentContainerStyle={styles.LISTIPADDINGRight}
+        showsHorizontalScrollIndicator={false}
+        data={list}
+        horizontal
+        keyExtractor={keyExtractor}
+        renderItem={renderItem}
+      />
+
+      <View style={styles.showAllComp}>
+        <Text style={styles.subHeading}>My Active Gigs</Text>
+        <Text style={styles.showAllText}>Show All</Text>
       </View>
 
-      <View style={styles.mainWrapper}>
-        <Text style={styles.headerText}>Sign In to EduGIGS</Text>
-        <TextInput
-          title={'Email Address'}
-          titleStyle={styles.titleStyle}
-          editable={true}
-          placeholder={'Enter Your Email'}
-          // value={address}
-          // placeholderTextColor={Colors.white}
-          // onChangeText={(value) => {
-          //   changeFinalData(value, 'street'), setAddress(value);
-          // }}
-          style={styles.textInputView}
-        />
-        <TextInput
-          title={'Password'}
-          titleStyle={styles.titleStyle}
-          editable={true}
-          placeholder={'Enter Your Password'}
-          // value={address}
-          // placeholderTextColor={Colors.white}
-          // onChangeText={(value) => {
-          //   changeFinalData(value, 'street'), setAddress(value);
-          // }}
-          style={styles.textInputView}
-        />
-        <Text style={styles.forgetText}>Forgot Password?</Text>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonTitle}>Sign In</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.bottomContainer}>
-        <Text style={styles.bottomText}>Don’t have an account?</Text>
-        <Text styles={styles.signUpText}> Sign Up</Text>
-      </View>
-    </View>
+      <FlatList
+        contentContainerStyle={styles.LISTIPADDINGRight}
+        showsHorizontalScrollIndicator={false}
+        data={list}
+        keyExtractor={keyExtractor}
+        renderItem={renderSmallCard}
+      />
+    </ScrollView>
   );
-}
+};
 
+// define your styles
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#E5E5E5',
     flex: 1,
-  },
-  iconWrapper: {flex: 0.5, alignItems: 'center', justifyContent: 'center'},
-  mainWrapper: {
-    flex: 3,
-    backgroundColor: '#FFFFFF',
     padding: responsiveFontSize(2),
-    margin: responsiveFontSize(2),
-    borderRadius: responsiveFontSize(1),
   },
-  headerText: {
-    fontSize: responsiveFontSize(2.2),
-    color: '#0A1629',
-    alignSelf: 'center',
-  },
-  textInputView: {
-    fontSize: responsiveFontSize(1.6),
-
-    color: 'white',
-    paddingHorizontal: responsiveWidth(4),
-    alignSelf: 'center',
-    height: responsiveHeight(7),
-    width: '100%',
-    borderColor: '#DAE7F1',
-    borderWidth: responsiveFontSize(0.2),
-  },
-  titleStyle: {
-    paddingTop: responsiveWidth(9),
-    color: '#8C8896',
-    fontSize: responsiveFontSize(1.6),
-  },
-  forgetText: {
-    color: '#7D8593',
-    alignSelf: 'flex-end',
-    paddingVertical: responsiveFontSize(3),
-  },
-  button: {
-    marginTop: responsiveFontSize(7),
-    backgroundColor: '#427DAA',
-    margin: responsiveFontSize(1),
+  iconWrapper: {
+    flex: 0.2,
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
+  },
+  greetingText: {color: '#818095', fontSize: responsiveFontSize(2.6)},
+  headingText: {fontSize: responsiveFontSize(2.6)},
+  showAllComp: {
+    marginVertical: responsiveFontSize(1),
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  subHeading: {fontSize: responsiveFontSize(2.3), color: '#1C2626'},
+  showAllText: {color: '#008479', fontSize: responsiveFontSize(2.3)},
+  gigListCard: {
+    flex: 1,
+    flexDirection: 'row',
+    borderWidth: responsiveFontSize(0.2),
+    borderRadius: responsiveFontSize(2),
+    borderColor: '#E3EDF4',
+    margin: responsiveFontSize(1),
+
+    padding: 1,
+  },
+  cardImageContainer: {
+    paddingTop: responsiveFontSize(2),
+    flex: 1,
+    alignItems: 'center',
+    padding: responsiveFontSize(1),
+  },
+  tinyCircleLogo: {width: responsiveFontSize(7), height: responsiveFontSize(7)},
+  cardDetailContainer: {
+    width: responsiveFontSize(35),
+    height: responsiveFontSize(37),
+    flex: 5,
+    padding: responsiveFontSize(1),
+  },
+  cardHeader: {fontSize: responsiveFontSize(2.8)},
+  cardUserName: {
+    color: '#5AB1A2',
+    fontSize: responsiveFontSize(2),
+    paddingVertical: responsiveFontSize(1),
+  },
+  cardDetail: {
+    fontSize: responsiveFontSize(2),
+    paddingVertical: responsiveFontSize(0.5),
+  },
+  cardPrice: {color: '#5AB1A2'},
+  buttonContainer: {flexDirection: 'row'},
+  button: {
+    backgroundColor: '#E3EDF4',
+    marginHorizontal: responsiveFontSize(1),
+    padding: responsiveFontSize(1),
     borderRadius: responsiveFontSize(1),
   },
-  buttonTitle: {
-    paddingVertical: responsiveFontSize(2.5),
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: responsiveFontSize(2.4),
-  },
-  bottomContainer: {flex: 1, flexDirection: 'row', justifyContent: 'center'},
-  bottomText: {
-    color: '#3D3A45',
-    fontSize: responsiveFontSize(2),
-  },
-  signUpText: {
-    color: '#427DAA',
-
-    fontSize: responsiveFontSize(2),
+  smallCardCont: {flexDirection: 'row', paddingVertical: responsiveFontSize(2)},
+  cardImage: {flex: 1},
+  smallCardDetail: {flex: 5, justifyContent: 'space-between'},
+  detailSubCont: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 });
 
-export default LaunchScreen;
+//make this component available to the app
+export default Home;
