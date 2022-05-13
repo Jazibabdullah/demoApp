@@ -5,7 +5,7 @@ import SearchActions from '../Redux/SearchRedux';
 
 export function* loginRequest(api, action) {
   try {
-    const {payload} = action;
+    const {payload,onSuccess} = action;
     console.log(payload);
     const response = yield call(api.loginRequest, payload);
     console.log(JSON.stringify(response, null, 8));
@@ -13,6 +13,7 @@ export function* loginRequest(api, action) {
 
     if (data?.isSuccess) {
       yield put(SearchActions.loginSuccess(data));
+      
     } else {
       //   if (count > 3) {
       //     navigation.navigate(ROUTE.FORGOTPASSWORDSCREEN);

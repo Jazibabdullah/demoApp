@@ -24,16 +24,9 @@ const create = (baseURL = 'https://www.admin.edugigs.org/api') => {
       api.setHeader('Authorization', token);
     }
   };
-
   const loginRequest = (payload) => {
-    console.log(payload);
-    const formData = new FormData();
-    formData.append('data', JSON.stringify(payload));
-    console.log(JSON.stringify(formData, null, 8));
-
-    return api.post('/login', formData);
+    return api.post('/login', payload);
   };
-
   const postsRequest = () => {
     return api.get('/all_gigs_system');
   };
@@ -78,7 +71,7 @@ const create = (baseURL = 'https://www.admin.edugigs.org/api') => {
     setAuthToken,
     loginRequest,
     postsRequest,
-    gigsRequest
+    gigsRequest,
   };
 };
 

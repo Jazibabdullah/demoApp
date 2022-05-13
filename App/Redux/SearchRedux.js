@@ -109,7 +109,7 @@ const LIST_DATA = [
 /* ------------- Types and Action Creators ------------- */
 
 const {Types, Creators} = createActions({
-  loginRequest: ['payload'],
+  loginRequest: ['payload','onSuccess'],
   loginSuccess: ['data'],
   loginFailure: null,
   postsRequest: ['payload'],

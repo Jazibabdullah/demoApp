@@ -20,11 +20,17 @@ function LaunchScreen(props) {
   useEffect(() => {}, []);
 
   //Bearer 194|BHOmvGpU8zXcvq9L6ENwuCK3pwOCaOV49WnSLlI1
-  const onPressSignIn = () => {
+  const onSuccess = () => {
     props.navigation.navigate('HomeScreen');
+  };
+  const onPressSignIn = () => {
     // alert(emailAddress + password);
-    // let payload = {email: emailAddress, password: password,user_type:'seller'};
-    // dispatch(SearchActions.loginRequest(payload));
+    let payload = {
+      email: emailAddress,
+      password: password,
+      user_type: 'seller',
+    };
+    dispatch(SearchActions.loginRequest(payload, onSuccess()));
   };
 
   return (
