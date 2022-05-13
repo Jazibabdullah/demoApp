@@ -28,10 +28,10 @@ const create = (baseURL = 'https://www.admin.edugigs.org/api') => {
     return api.post('/login', payload);
   };
   const postsRequest = () => {
-    return api.get('/all_gigs_system');
+    return api.get('/all_posts');
   };
   const gigsRequest = () => {
-    return api.get('/all_posts');
+    return api.get('/all_gigs_system');
   };
   // ------
   // STEP 2

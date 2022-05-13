@@ -1,22 +1,27 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {
   responsiveFontSize,
-  responsiveWidth,
   responsiveHeight,
+  responsiveWidth,
 } from 'react-native-responsive-dimensions';
+import Svg, {Path, Rect} from 'react-native-svg';
+import {useDispatch, useSelector} from 'react-redux';
+import {Loader, TextInput} from '../Components';
 import SearchActions from '../Redux/SearchRedux';
 
-import api from '../Services/Api';
-import Svg, {Path, Rect} from 'react-native-svg';
-import {TextInput} from '../Components';
-import {useDispatch} from 'react-redux';
-import Loader from '../Components/Loader';
 // import {Icon} from '../Images/Icons';
 function LaunchScreen(props) {
   const dispatch = useDispatch();
-  const [emailAddress, setemailAddress] = useState('');
-  const [password, setpassword] = useState('');
+  const login = useSelector((state) => state?.search?.login);
+  const [emailAddress, setemailAddress] = useState(null);
+  const [password, setpassword] = useState(null);
   useEffect(() => {}, []);
 
   //Bearer 194|BHOmvGpU8zXcvq9L6ENwuCK3pwOCaOV49WnSLlI1
@@ -30,11 +35,13 @@ function LaunchScreen(props) {
       password: password,
       user_type: 'seller',
     };
-    dispatch(SearchActions.loginRequest(payload, onSuccess()));
+    dispatch(SearchActions.loginRequest(payload, onSuccess));
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container} keyboardShouldPersistTaps={'handled'}>
+      <Loader loading={login?.loading} fullScreen />
+
       <View style={styles.iconWrapper}>
         <Svg
           xmlns="http://www.w3.org/2000/svg"
@@ -87,7 +94,17 @@ function LaunchScreen(props) {
           style={styles.textInputView}
         />
         <Text style={styles.forgetText}>Forgot Password?</Text>
-        <TouchableOpacity style={styles.button} onPress={onPressSignIn}>
+
+        <TouchableOpacity
+         activeOpacity={.3}
+          style={[
+            styles.button,
+            emailAddress === null || password === null
+              ? {opacity: 0.7}
+              : {opacity: 1},
+          ]}
+          onPress={onPressSignIn}
+          disabled={emailAddress === null || password === null ? true : false}>
           <Text style={styles.buttonTitle}>Sign In</Text>
         </TouchableOpacity>
       </View>
@@ -97,7 +114,7 @@ function LaunchScreen(props) {
           <Text style={styles.signUpTextStyle}> Sign Up</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -147,9 +164,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: responsiveFontSize(1),
+    paddingVertical: responsiveFontSize(2.5),
   },
   buttonTitle: {
-    paddingVertical: responsiveFontSize(2.5),
     color: 'white',
     fontWeight: 'bold',
     fontSize: responsiveFontSize(2.4),

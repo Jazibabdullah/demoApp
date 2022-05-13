@@ -5,27 +5,18 @@ import SearchActions from '../Redux/SearchRedux';
 
 export function* loginRequest(api, action) {
   try {
-    const {payload,onSuccess} = action;
-    console.log(payload);
+    const {payload, onSuccess} = action;
+    api.setAuthToken('');
     const response = yield call(api.loginRequest, payload);
-    console.log(JSON.stringify(response, null, 8));
     const {data} = response;
 
-    if (data?.isSuccess) {
-      yield put(SearchActions.loginSuccess(data));
-      
+    if (data?.success) {
+      api.setAuthToken(`Bearer ${data?.body?.access_token}`);
+      yield put(SearchActions.loginSuccess(data?.body?.user));
+      // onSuccess ? onSuccess() : null;
     } else {
-      //   if (count > 3) {
-      //     navigation.navigate(ROUTE.FORGOTPASSWORDSCREEN);
-      //     yield put(AuthActions.loginFailure());
-      //   } else {
-      //     yield put(AuthActions.loginFailure(true));
-      //     showForgotpassword?.();
-      //     catchError(
-      //       'The login credentials you’ve entered are incorrect',
-      //       Toast_Types.error
-      //     );
-      //   }
+      alert(data?.error);
+      yield put(SearchActions.loginFailure(''));
     }
   } catch (err) {
     alert(err);
@@ -35,15 +26,13 @@ export function* loginRequest(api, action) {
 }
 export function* postsRequest(api, action) {
   try {
-    api.setAuthToken('Bearer 194|BHOmvGpU8zXcvq9L6ENwuCK3pwOCaOV49WnSLlI1');
-
     const response = yield call(api.postsRequest);
-    console.log(JSON.stringify(response, null, 8));
     const {data} = response;
 
     if (data?.success) {
       yield put(SearchActions.postsSuccess(data?.body));
     } else {
+      alert(data?.error);
       yield put(SearchActions.postsFailure(''));
     }
   } catch (err) {
@@ -54,15 +43,13 @@ export function* postsRequest(api, action) {
 }
 export function* gigsRequest(api, action) {
   try {
-    api.setAuthToken('Bearer 194|BHOmvGpU8zXcvq9L6ENwuCK3pwOCaOV49WnSLlI1');
-
     const response = yield call(api.gigsRequest);
-    console.log(JSON.stringify(response, null, 8));
     const {data} = response;
 
     if (data?.success) {
       yield put(SearchActions.gigsSuccess(data?.body));
     } else {
+      alert(data?.error);
       yield put(SearchActions.gigsFailure(''));
     }
   } catch (err) {
@@ -74,5 +61,4 @@ export function* gigsRequest(api, action) {
 export function* setTokenRequest(api, action) {
   const {payload} = action;
   api.setAuthToken(payload.token);
-  //   setAuthorizationToken(payload.token, payload.user);
 }

@@ -23,13 +23,14 @@ const Home = () => {
   const dispatch = useDispatch();
   const posts = useSelector((state) => state?.search?.posts);
   const gigs = useSelector((state) => state?.search?.gigs);
-
+  const user = useSelector((state) => state?.search?.login?.user);
   useEffect(() => {
     dispatch(SearchActions.postsRequest());
-    dispatch(SearchActions.gigsRequest());
+    setTimeout(() => {
+      dispatch(SearchActions.gigsRequest());
+    }, 10);
   }, []);
-
-  const list = [{}, {}, {}, {}, {}, {}, {}, {}, {}];
+  console.log(JSON.stringify(user, null, 8));
   const keyExtractor = (item, index) => index.toString();
   const renderItem = ({item, index}) => {
     return (
@@ -65,7 +66,7 @@ const Home = () => {
           <Image style={styles.tinyLogo} source={{uri: item?.profile_image}} />
         </View>
         <View style={styles.smallCardDetail}>
-          <Text style={styles.subHeading}>{item?.image1}</Text>
+          <Text style={styles.subHeading}>{item?.title}</Text>
           <View style={styles.detailSubCont}>
             <Image
               // style={styles.tinyLogo}
@@ -79,8 +80,9 @@ const Home = () => {
       </TouchableOpacity>
     );
   };
+
   return (
-    <ScrollView nestedScroll style={styles.container}>
+    <ScrollView style={styles.container}>
       <Loader loading={posts?.loading || gigs?.loading} fullScreen />
       <View style={styles.iconWrapper}>
         <Svg
@@ -108,8 +110,8 @@ const Home = () => {
           />
         </Svg>
         <Image
-          style={styles.tinyLogo}
-          source={require('../Images/userPic.png')}
+          style={styles.tinyCircleLogo}
+          source={{uri: user?.profile_image}}
         />
       </View>
       <View style={{flex: 1}}>
@@ -139,7 +141,6 @@ const Home = () => {
       </View>
 
       <FlatList
-        contentContainerStyle={styles.LISTIPADDINGRight}
         showsHorizontalScrollIndicator={false}
         data={gigs?.data}
         keyExtractor={keyExtractor}
@@ -168,7 +169,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  subHeading: {fontSize: responsiveFontSize(2.3), color: '#1C2626'},
+  subHeading: {fontSize: responsiveFontSize(2), color: '#1C2626'},
   showAllText: {color: '#008479', fontSize: responsiveFontSize(2.3)},
   gigListCard: {
     flex: 1,
@@ -213,7 +214,7 @@ const styles = StyleSheet.create({
     width: responsiveFontSize(30),
   },
   price: {
-    fontSize: responsiveFontSize(2),
+    fontSize: responsiveFontSize(1.8),
     paddingVertical: responsiveFontSize(0.5),
   },
   cardPrice: {color: '#5AB1A2'},

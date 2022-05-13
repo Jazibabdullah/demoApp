@@ -109,7 +109,7 @@ const LIST_DATA = [
 /* ------------- Types and Action Creators ------------- */
 
 const {Types, Creators} = createActions({
-  loginRequest: ['payload','onSuccess'],
+  loginRequest: ['payload', 'onSuccess'],
   loginSuccess: ['data'],
   loginFailure: null,
   postsRequest: ['payload'],
@@ -133,6 +133,7 @@ export const INITIAL_STATE = Immutable({
   results: LIST_DATA,
   login: {
     data: null,
+    user: null,
     error: null,
     payload: null,
     loading: false,
@@ -161,7 +162,6 @@ export const performSearch = (state, {searchTerm}) => {
 export const cancelSearch = (state) => INITIAL_STATE;
 
 export const loginRequest = (state, {payload}) => {
-  console.log(payload);
   return state.merge({
     login: {
       ...state.login,
@@ -177,6 +177,7 @@ export const loginSuccess = (state, {data}) => {
       ...state.login,
       loading: false,
       data: data,
+      user: data,
       error: null,
     },
   });
